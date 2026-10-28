@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/* Same design language as Whisli: monochrome, blue is the only accent, red only for errors. */
+:root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  --page: #fafafa;
+  --card: #ffffff;
+  --raised: #f4f4f5;
+  --ink: #18181b;
+  --muted: #71717a;
+  --line: #e4e4e7;
+  --status-ok: #0090ff;
+  --status-ok-text: #0d74ce;
+  --status-ok-bg: #edf6ff;
+  --status-error: #dc2626;
+  --status-error-bg: #fef2f2;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #09090b;
+  --card: #09090b;
+  --raised: #18181b;
+  --ink: #f4f4f5;
+  --muted: #a1a1aa;
+  --line: #27272a;
+  --status-ok: #0090ff;
+  --status-ok-text: #70b8ff;
+  --status-ok-bg: #0d2847;
+  --status-error: #f87171;
+  --status-error-bg: #450a0a;
+}
+
+body { margin: 0; min-width: 320px; background: var(--page); color: var(--ink); }
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: default; opacity: .5; }
+
+/* In a layer so Tailwind utilities can override them */
+@layer components {
+  .whisli-page { background: var(--page); color: var(--ink); }
+  /* Card frames a bit stronger than divider lines, so boxes stay visible on the dark background */
+  .whisli-card { background: var(--card); border: 1px solid color-mix(in srgb, var(--muted) 35%, var(--line)); border-radius: .75rem; }
+  .whisli-line { border-color: var(--line); }
+  .whisli-muted { color: var(--muted); }
+  .whisli-raised { background: var(--raised); }
+  .whisli-nav { color: var(--muted); }
+  .whisli-nav:hover { background: var(--raised); color: var(--ink); }
+  .whisli-nav-active { background: var(--raised); color: var(--ink); }
+  .whisli-link { color: var(--muted); }
+  .whisli-link:hover { color: var(--ink); }
+  .whisli-button { display: inline-flex; align-items: center; gap: .5rem; height: 2.25rem; padding: 0 .875rem; border: 1px solid var(--line); border-radius: .375rem; background: var(--raised); color: var(--ink); white-space: nowrap; }
+  .whisli-button:hover:not(:disabled) { background: var(--card); }
+  .whisli-button-ghost { border-color: transparent; background: transparent; color: var(--muted); }
+  .whisli-button-ghost:hover:not(:disabled) { background: var(--raised); color: var(--ink); }
+  .whisli-button-danger { border-color: var(--status-error); background: transparent; color: var(--status-error); }
+  .whisli-button-danger:hover:not(:disabled) { background: var(--status-error-bg); }
+  .whisli-input { height: 2.25rem; min-width: 0; border: 1px solid var(--line); border-radius: .375rem; background: transparent; color: var(--ink); padding: 0 .75rem; }
+  .whisli-select { height: 2.25rem; min-width: 0; border: 1px solid var(--line); border-radius: .375rem; background: var(--page); color: var(--ink); padding: 0 .5rem; }
+  .whisli-check { width: 1rem; height: 1rem; accent-color: var(--status-ok); }
+  .whisli-status-ok { color: var(--status-ok-text); }
+  .whisli-status-error { color: var(--status-error); }
+  .whisli-dialog { width: min(28rem, calc(100% - 2rem)); margin: auto; border: 1px solid var(--line); border-radius: .75rem; background: var(--card); color: var(--ink); padding: 1.25rem; box-shadow: 0 24px 72px rgb(0 0 0 / .22); }
+  .whisli-dialog::backdrop { background: rgb(9 9 11 / .52); backdrop-filter: blur(2px); }
+}
+
+/* Radar picture (top view) */
+/* Faint background and stronger rings, so the range lines stand out in both themes */
+.radar-cone { fill: color-mix(in srgb, var(--raised) 45%, transparent); }
+.radar-zone { fill: color-mix(in srgb, var(--status-ok) 10%, transparent); }
+.radar-ring { fill: none; stroke: color-mix(in srgb, var(--muted) 45%, transparent); }
+.radar-label { fill: var(--muted); font-size: 9px; paint-order: stroke; stroke: var(--card); stroke-width: 3px; stroke-linejoin: round; }
+.radar-target { fill: var(--status-ok); }
+.radar-wave { fill: none; stroke: var(--status-ok); stroke-width: 1.5; }
+.radar-wave-glow { fill: none; stroke: var(--status-ok); stroke-width: 8; }
+.radar-echo { fill: none; stroke: var(--status-ok); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.radar-dot { fill: var(--ink); }
+
+/* Sensitivity bars: energy against the presence threshold line */
+.gate-track { position: relative; height: .75rem; border-radius: 999px; background: var(--raised); overflow: hidden; }
+.gate-bar { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--muted); opacity: .45; transition: width .3s; }
+.gate-bar-on { background: var(--status-ok); opacity: 1; }
+.gate-mark { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--ink); }
+.gate-mark-noise { background: var(--status-error); opacity: .7; }
+/* The threshold line is a range input laid over the bar: only its thumb (the line) is visible */
+.gate-slider { position: absolute; inset: -.375rem 0; width: 100%; margin: 0; background: transparent; appearance: none; -webkit-appearance: none; cursor: ew-resize; }
+.gate-slider:disabled { cursor: default; opacity: 1; }
+.gate-slider::-webkit-slider-runnable-track { height: 100%; background: transparent; }
+.gate-slider::-moz-range-track { height: 100%; background: transparent; }
+.gate-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 6px; height: 1.5rem; border-radius: 2px; background: var(--ink); border: 2px solid var(--page); }
+.gate-slider::-moz-range-thumb { width: 4px; height: 1.5rem; border-radius: 2px; background: var(--ink); border: 2px solid var(--page); }
+.gate-slider:focus-visible { outline: none; }
+.gate-slider:focus-visible::-webkit-slider-thumb { background: var(--status-ok); }
+.gate-slider:focus-visible::-moz-range-thumb { background: var(--status-ok); }
+
+/* Sensors graph: links from the Wi-Fi hub to the sensor cards */
+.graph-link { fill: none; stroke: color-mix(in srgb, var(--muted) 30%, transparent); stroke-width: 1.5; }
+.graph-link-off { stroke: var(--line); stroke-dasharray: 4 4; }
+.graph-flow { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 3 9; animation: graph-flow 1s linear infinite; }
+@keyframes graph-flow { from { stroke-dashoffset: 12; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .graph-flow { animation: none; } }

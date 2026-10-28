@@ -1,0 +1,11 @@
+.pio
+.vscode
+.DS_Store
+node_modules
+ui/dist
+src/generated
+src/local_defaults.h
+
+# Instructions for coding agents, kept local
+AGENTS.md
+CLAUDE.md
