@@ -95,6 +95,15 @@ download. A separate page has the full event log with filters.
 - **Updates over Wi-Fi** – new firmware from the panel or with a single `curl` command.
 - **Two languages, two themes** – Polish and English, light and dark.
 
+## Installation
+
+Ready firmware is in [Releases](https://github.com/tjaworski997/whisli-sense/releases/latest):
+
+- **first time, over USB** – `whisli-sense-<version>-full.bin` at address `0x0`, e.g. from the browser with
+  [esptool-js](https://espressif.github.io/esptool-js/) (Chrome or Edge) or
+  `esptool.py --chip esp32c3 write_flash 0x0 whisli-sense-<version>-full.bin`,
+- **updates, over Wi-Fi** – `whisli-sense-<version>.bin` in the panel (System → Settings → Firmware).
+
 ## Quick start
 
 1. Power it up. A new sensor opens the Wi-Fi network **Whisli-Sense-XXXX** (password `whisli_gogo`).
@@ -144,6 +153,8 @@ WHISLI_SENSE_PASSWORD=<password> pio run -e ota -t upload --upload-port whisli-s
 
 Panel against a live sensor, with live reload: `cd ui && SENSE_DEVICE_URL=http://<sensor ip> npm run dev`.
 In this mode `http://localhost:5173/?demo=10#/sensors` adds 10 made-up sensors.
+
+GitHub release: `scripts/release.sh` (builds without the local Wi-Fi and publishes both files).
 
 To have a board join Wi-Fi straight away, copy `src/local_defaults.example.h` to
 `src/local_defaults.h` and fill in the network. The file is not committed.

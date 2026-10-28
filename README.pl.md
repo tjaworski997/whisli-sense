@@ -97,6 +97,15 @@ jednym kliknięciem. Osobna strona z pełnym dziennikiem zdarzeń i filtrami.
 - **Aktualizacje przez Wi-Fi** – nowy firmware wgrywa się z panelu albo jednym poleceniem `curl`.
 - **Dwa języki i dwa motywy** – polski i angielski, jasny i ciemny.
 
+## Instalacja
+
+Gotowy firmware jest w [Releases](https://github.com/tjaworski997/whisli-sense/releases/latest):
+
+- **pierwszy raz, przez USB** – plik `whisli-sense-<wersja>-full.bin` od adresu `0x0`, np. z przeglądarki
+  przez [esptool-js](https://espressif.github.io/esptool-js/) (Chrome albo Edge) albo
+  `esptool.py --chip esp32c3 write_flash 0x0 whisli-sense-<wersja>-full.bin`,
+- **aktualizacje, przez Wi-Fi** – plik `whisli-sense-<wersja>.bin` w panelu (System → Ustawienia → Firmware).
+
 ## Szybki start
 
 1. Podłącz zasilanie. Nowa czujka otwiera sieć Wi-Fi **Whisli-Sense-XXXX** (hasło `whisli_gogo`).
@@ -146,6 +155,8 @@ panelu (szybszy build samego firmware).
 
 Panel na żywej czujce, z podglądem zmian: `cd ui && SENSE_DEVICE_URL=http://<ip czujki> npm run dev`.
 Adres `http://localhost:5173/?demo=10#/sensors` dokłada w tym trybie 10 udawanych czujek.
+
+Wydanie na GitHubie: `scripts/release.sh` (buduje bez lokalnej sieci Wi-Fi i publikuje oba pliki).
 
 Jeśli płytka ma od razu połączyć się z Wi-Fi, skopiuj `src/local_defaults.example.h` do
 `src/local_defaults.h` i wpisz sieć. Plik nie trafia do gita.

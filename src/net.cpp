@@ -13,8 +13,9 @@
 #include "lock.h"
 #include "peers.h"
 
-// Optional, not in git: Wi-Fi used until one is saved in the panel (see local_defaults.example.h)
-#if __has_include("local_defaults.h")
+// Optional, not in git: Wi-Fi used until one is saved in the panel (see local_defaults.example.h).
+// Release builds (scripts/release.sh) never take it, so no one's network ends up in a public file.
+#if __has_include("local_defaults.h") && !defined(RELEASE_BUILD)
 #include "local_defaults.h"
 #endif
 #ifndef DEFAULT_WIFI_SSID
