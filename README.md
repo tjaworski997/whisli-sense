@@ -35,6 +35,11 @@ over Wi-Fi, has its own panel in the browser and, if you want, announces itself 
 Powered over USB-C (5 V); the modules run from the board's 3.3 V. Wiring is in the
 [technical documentation](#hardware-and-wiring).
 
+<p align="center">
+  <img src="doc/prototype.webp" width="420" alt="Breadboard prototype: ESP32-C3-Zero, HMMD radar, SHT3x and BH1750"><br>
+  <sub>The breadboard prototype – from the left: ESP32-C3-Zero, HMMD mmWave radar, SHT3x, BH1750.</sub>
+</p>
+
 ## Features
 
 ### Start – live presence
@@ -196,7 +201,8 @@ noise × 1.15), trigger = hold × 1.5. Other gates: hold = noise × (1 + margin)
 ## MQTT (Home Assistant)
 
 One device in HA (`whisli_sense_<id>`, `<id>` = last MAC bytes) with entities: Occupancy, Distance,
-Temperature, Humidity, Illuminance, Wi-Fi signal (entity names are in Polish).
+Temperature, Humidity, Illuminance, Wi-Fi signal (in English whatever the panel language; rename
+them in HA if you like).
 
 | Topic | Payload |
 |---|---|

@@ -111,14 +111,15 @@ struct Entity {
   const char *component, *key, *name, *deviceClass, *unit;
   bool diagnostic;
 };
-// unique_id = <nodeId>_<key>; never change the keys or HA loses the entities
+// unique_id = <nodeId>_<key>; never change the keys or HA loses the entities.
+// Names are English in every panel language (HA users translate or rename them there).
 const Entity ENTITIES[] = {
-    {"binary_sensor", "occupancy", "Obecność", "occupancy", nullptr, false},
-    {"sensor", "distance", "Odległość", "distance", "m", false},
-    {"sensor", "temperature", "Temperatura", "temperature", "°C", false},
-    {"sensor", "humidity", "Wilgotność", "humidity", "%", false},
-    {"sensor", "lux", "Jasność", "illuminance", "lx", false},
-    {"sensor", "rssi", "Sygnał Wi-Fi", "signal_strength", "dBm", true},
+    {"binary_sensor", "occupancy", "Occupancy", "occupancy", nullptr, false},
+    {"sensor", "distance", "Distance", "distance", "m", false},
+    {"sensor", "temperature", "Temperature", "temperature", "°C", false},
+    {"sensor", "humidity", "Humidity", "humidity", "%", false},
+    {"sensor", "lux", "Illuminance", "illuminance", "lx", false},
+    {"sensor", "rssi", "Wi-Fi signal", "signal_strength", "dBm", true},
 };
 
 void publishDiscovery(const Snapshot &now) {

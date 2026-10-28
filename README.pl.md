@@ -35,6 +35,11 @@ ma własny panel w przeglądarce i – jeśli chcesz – sama ogłasza się w Ho
 Zasilanie przez USB-C (5 V), moduły z 3,3 V płytki. Schemat połączeń jest w
 [dokumentacji technicznej](#sprzęt-i-połączenia).
 
+<p align="center">
+  <img src="doc/prototype.webp" width="420" alt="Prototyp na płytce stykowej: ESP32-C3-Zero, radar HMMD, SHT3x i BH1750"><br>
+  <sub>Prototyp na płytce stykowej – od lewej: ESP32-C3-Zero, radar HMMD mmWave, SHT3x, BH1750.</sub>
+</p>
+
 ## Funkcje
 
 ### Start – obecność na żywo
@@ -197,8 +202,9 @@ wykrycie = podtrzymanie × 1,5. Pozostałe: podtrzymanie = szum × (1 + zapas), 
 
 ## MQTT (Home Assistant)
 
-Jedno urządzenie w HA (`whisli_sense_<id>`, `<id>` = końcówka MAC) z encjami: Obecność, Odległość,
-Temperatura, Wilgotność, Jasność, Sygnał Wi-Fi.
+Jedno urządzenie w HA (`whisli_sense_<id>`, `<id>` = końcówka MAC) z encjami: Occupancy, Distance,
+Temperature, Humidity, Illuminance, Wi-Fi signal (nazwy po angielsku niezależnie od języka panelu;
+w HA można je zmienić).
 
 | Temat | Treść |
 |---|---|
