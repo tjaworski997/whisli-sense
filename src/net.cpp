@@ -131,6 +131,12 @@ void begin() {
   password = saved ? prefs.getString("password", "") : DEFAULT_WIFI_PASSWORD;
   apPassword = prefs.getString("apPassword", DEFAULT_PASSWORD);
   prefs.end();
+  // Built-in defaults become the saved network, so a later public release (built without them)
+  // still finds the Wi-Fi instead of falling back to the access point.
+  if (!saved && ssid.length()) {
+    save("ssid", ssid);
+    save("password", password);
+  }
 
   WiFi.persistent(false);  // credentials live in our NVS namespace only
   WiFi.mode(WIFI_STA);
