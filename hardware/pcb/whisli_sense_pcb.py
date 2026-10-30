@@ -12,12 +12,15 @@ room. KiCad's Y grows downwards, so P() flips it. All dimensions in mm.
 """
 import math
 import os
+import shutil
 import subprocess
 
 import pcbnew
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "whisli-sense.kicad_pcb")
+FAB = os.path.join(HERE, "fab")   # Gerbers + drill files, zipped for upload to the PCB maker
+FAB_LAYERS = "F.Cu,B.Cu,F.Mask,B.Mask,F.Silkscreen,B.Silkscreen,Edge.Cuts"
 KICAD_CLI = os.environ.get("KICAD_CLI", "/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli")
 
 # --- board (from the enclosure: PLATE_D, POST_R, POST_ANGLES) ---
@@ -351,6 +354,19 @@ def main():
     report = os.path.join(HERE, "drc.rpt")
     subprocess.run([KICAD_CLI, "pcb", "drc", "--refill-zones", "--save-board", "--severity-all",
                     "-o", report, OUT], check=True)
+    fab()
+
+
+def fab():
+    shutil.rmtree(FAB, ignore_errors=True)
+    files = os.path.join(FAB, "gerber") + os.sep
+    subprocess.run([KICAD_CLI, "pcb", "export", "gerbers", "--layers", FAB_LAYERS, "-o", files, OUT],
+                   check=True)
+    subprocess.run([KICAD_CLI, "pcb", "export", "drill", "--excellon-separate-th", "-o", files, OUT],
+                   check=True)
+    zip_path = shutil.make_archive(os.path.join(FAB, f"whisli-sense-{VERSION.replace(' ', '-')}"),
+                                   "zip", files)
+    print(zip_path)
 
 
 if __name__ == "__main__":

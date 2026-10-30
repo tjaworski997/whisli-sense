@@ -90,11 +90,6 @@ C3-Zero przykłada się półotworami do padów i lutuje od boku.
 
 ## Zamówienie (JLCPCB)
 
-2 warstwy, 1,6 mm, HASL, dowolny kolor. Gerbery i wiercenia:
-
-```sh
-kicad-cli pcb export gerbers -o fab/ hardware/pcb/whisli-sense.kicad_pcb
-kicad-cli pcb export drill -o fab/ hardware/pcb/whisli-sense.kicad_pcb
-```
-
-Spakuj katalog `fab/` do zip i wgraj na jlcpcb.com.
+Skrypt robi gotowy plik `fab/whisli-sense-<wersja>.zip` (Gerbery i wiercenia, poza gitem).
+Wgraj go na https://cart.jlcpcb.com/quote. Parametry: 2 warstwy, 1,6 mm, HASL, dowolny kolor,
+bez montażu (PCB Assembly wyłączone).
