@@ -41,6 +41,18 @@ PAD_D, DRILL_D = 1.8, 1.0
 VIA_D, VIA_DRILL = 0.8, 0.4
 ANTENNA_KEEPOUT = (7.0, 16.0, 22.0, 36.0)   # no copper near the C3-Zero chip antenna, both layers
 
+# --- silkscreen on the ceiling side: name, board version, power pads ---
+FONT = "Helvetica Neue"     # same as the logo on the cover
+VERSION = "v1 2026-10"
+LABELS = [
+    # text, (x, y), height
+    ("whis.li sense", (1.0, -20.5), 3.0),
+    (VERSION, (1.0, -24.5), 1.5),
+    ("+", (-21.27, -2.3), 1.5),
+    ("\u2212", (-18.73, -2.3), 1.5),
+    ("5\u201336 V", (-20.0, -4.4), 1.2),
+]
+
 NETS = ("GND", "VIN", "+5V", "+3V3", "SDA", "SCL", "RADAR_RX", "RADAR_TX", "RADAR_OUT")
 
 
@@ -217,8 +229,23 @@ def place(bd):
     # back: ceiling side
     bd.module("U1", "ESP32-C3-Zero", C3, (14.5, 9.0), back=True, castellated=True)
     bd.module("U6", "Pololu D36V6F5", POLOLU, (-21.0, 14.0), rot=-90, back=True)
-    bd.module("J1", "zasilanie 5-36 V", dict(size=(5.6, 3.0), pins=[("VIN", -1.27, 0), ("GND", 1.27, 0)]),
+    j1 = bd.module("J1", "zasilanie 5-36 V", dict(size=(5.6, 3.0), pins=[("VIN", -1.27, 0), ("GND", 1.27, 0)]),
               (-20.0, 0.0), back=True)    # wires come up through the cable hole in the base
+    j1.Reference().SetVisible(False)   # the +/- labels say enough
+
+
+def labels(bd):
+    for text, pos, height in LABELS:
+        t = pcbnew.PCB_TEXT(bd.b)
+        t.SetText(text)
+        t.SetLayer(pcbnew.B_SilkS)
+        t.SetMirrored(True)     # reads correctly when looking at the back
+        t.SetUnresolvedFontName(FONT)
+        t.ResolveFont(None)
+        t.SetTextSize(pcbnew.VECTOR2I(mm(height), mm(height)))
+        t.SetTextThickness(mm(max(0.15, height * 0.12)))
+        t.SetPosition(P(*pos))
+        bd.b.Add(t)
 
 
 # Tracks as (net, layer, width, points) and vias as (net, point), all in model coordinates.
@@ -316,6 +343,7 @@ def main():
     outline(bd)
     place(bd)
     route(bd)
+    labels(bd)
     if os.environ.get("DUMP"):
         dump(bd)
     pcbnew.SaveBoard(OUT, bd.b)

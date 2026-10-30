@@ -45,6 +45,10 @@ Raport trafia do `drc.rpt`. Musi pokazywać 0 naruszeń i 0 niepołączonych pad
 - Komora czujników ma ramkę drukowaną osobno i przyklejoną według obrysu na sitodruku.
 - Szczelina pod komorą przerywa przepływ ciepła od ESP i przetwornicy.
 - 3 otwory Ø2,8 na słupki M2,5 (r = 30 mm).
+- Napis od strony sufitu: „whis.li sense” w Helvetica Neue (jak na pokrywie), wersja płytki
+  (`VERSION` w skrypcie) oraz oznaczenie padów zasilania: + / − i 5–36 V.
+  Przy nowej partii płytek podbij wersję. Font jest systemowy na macOS, więc Gerbery eksportuj na
+  Macu, inaczej KiCad podstawi własny font.
 
 ## Połączenia
 
