@@ -24,7 +24,8 @@ Stan na **2026-10-30**. Szczegóły są w README poszczególnych części:
   - ESP32-C3-Zero, antena przy krawędzi,
   - przetwornica Pololu D36V6F5 (wejście 5,2–50 V),
   - pady na przewody zasilania.
-- **Zasilanie 5–36 V** przewodem z puszki. Przetwornica ma wejście do 50 V, ale na płytce jest
+- **Zasilanie 5–36 V**: krótki przewód z czujki łączy się z zasilaniem w puszce przez WAGO
+  i przechodzi przez otwory odciążające przy J1. Przetwornica ma wejście do 50 V, ale na płytce jest
   opisane 5–36 V. Bez diody i bez zacisku: **USB tylko do pierwszego wgrania, nigdy razem
   z zasilaniem z J1.**
 - **Obie części są generowane skryptami w repo**, a ręczne zmiany w Fusion i KiCadzie znikają przy
@@ -38,7 +39,8 @@ Stan na **2026-10-30**. Szczegóły są w README poszczególnych części:
 | Pololu D36V6F5 | np. Kamami; 13 × 10 × 3 mm |
 | SCD41, moduł 4-pin ~13,4 × 21,6 mm | opcja; kolejność pinów VCC, GND, SCL, SDA |
 | wkładki M2,5, śruby M2,5 | mocowanie płytki do słupków podstawy |
-| przewód silikonowy, goldpiny (zsuwa się z nich plastik) | lutowanie modułów |
+| przewód silikonowy 0,25–0,5 mm², goldpiny (zsuwa się z nich plastik) | lutowanie modułów, przewód zasilania ~15 cm |
+| złączka WAGO 221 (2×) | połączenie przewodu czujki z zasilaniem w puszce |
 
 ## Następne kroki (w tej kolejności)
 

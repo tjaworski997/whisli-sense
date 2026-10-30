@@ -31,6 +31,11 @@ POST_ANGLES = (90.0, 210.0, 330.0)
 POST_HOLE_D = 2.8
 POST_KEEPOUT_D = 7.5        # post on the back, M2.5 screw head on the front
 
+# --- power wires: a short pigtail soldered to J1, joined to the mains supply with a WAGO in the
+# ceiling box. Each wire loops through a relief hole first, so a tug never pulls on the joint.
+RELIEF_HOLES = ((-22.3, -5.0), (-17.7, -5.0))
+RELIEF_HOLE_D = 2.2         # 0.25-0.5 mm2 silicone wire with its insulation
+
 # --- sensor chamber: a printed frame glued on the front, open to the vents in the cover ---
 CHAMBER = (-17.3, -29.0, 17.3, -13.0)   # inner x0, y0, x1, y1
 CHAMBER_WALL = 1.2
@@ -53,7 +58,7 @@ LABELS = [
     (VERSION, (1.0, -24.5), 1.5),
     ("+", (-21.27, -2.3), 1.5),
     ("\u2212", (-18.73, -2.3), 1.5),
-    ("5\u201336 V", (-20.0, -4.4), 1.2),
+    ("5\u201336 V", (-20.0, 2.4), 1.2),
 ]
 
 NETS = ("GND", "VIN", "+5V", "+3V3", "SDA", "SCL", "RADAR_RX", "RADAR_TX", "RADAR_OUT")
@@ -202,24 +207,29 @@ def outline(bd):
         r.SetStart(P(x0 - g, y1 + g))
         r.SetEnd(P(x1 + g, y0 - g))
     for i, a in enumerate(POST_ANGLES):
-        fp = pcbnew.FOOTPRINT(bd.b)
-        fp.SetReference(f"H{i + 1}")
-        fp.Reference().SetVisible(False)
-        fp.Value().SetVisible(False)
-        pad = pcbnew.PAD(fp)
-        pad.SetAttribute(pcbnew.PAD_ATTRIB_NPTH)
-        pad.SetShape(pcbnew.PAD_SHAPE_CIRCLE)
-        pad.SetSize(pcbnew.VECTOR2I(mm(POST_HOLE_D), mm(POST_HOLE_D)))
-        pad.SetDrillSize(pcbnew.VECTOR2I(mm(POST_HOLE_D), mm(POST_HOLE_D)))
-        pad.SetLayerSet(pad.UnplatedHoleMask())
-        fp.Add(pad)
-        for layer in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
-            k = bd.shape(fp, pcbnew.SHAPE_T_CIRCLE, layer, 0.05)
-            k.SetCenter(pcbnew.VECTOR2I(0, 0))
-            k.SetEnd(pcbnew.VECTOR2I(mm(POST_KEEPOUT_D / 2), 0))
-        fp.SetPosition(P(*polar(POST_R, a)))
-        bd.b.Add(fp)
+        hole(bd, f"H{i + 1}", polar(POST_R, a), POST_HOLE_D, POST_KEEPOUT_D)
+    for i, pos in enumerate(RELIEF_HOLES):
+        hole(bd, f"H{len(POST_ANGLES) + i + 1}", pos, RELIEF_HOLE_D, RELIEF_HOLE_D + 1.0)
 
+
+def hole(bd, ref, pos, d, keepout_d):
+    fp = pcbnew.FOOTPRINT(bd.b)
+    fp.SetReference(ref)
+    fp.Reference().SetVisible(False)
+    fp.Value().SetVisible(False)
+    pad = pcbnew.PAD(fp)
+    pad.SetAttribute(pcbnew.PAD_ATTRIB_NPTH)
+    pad.SetShape(pcbnew.PAD_SHAPE_CIRCLE)
+    pad.SetSize(pcbnew.VECTOR2I(mm(d), mm(d)))
+    pad.SetDrillSize(pcbnew.VECTOR2I(mm(d), mm(d)))
+    pad.SetLayerSet(pad.UnplatedHoleMask())
+    fp.Add(pad)
+    for layer in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
+        k = bd.shape(fp, pcbnew.SHAPE_T_CIRCLE, layer, 0.05)
+        k.SetCenter(pcbnew.VECTOR2I(0, 0))
+        k.SetEnd(pcbnew.VECTOR2I(mm(keepout_d / 2), 0))
+    fp.SetPosition(P(*pos))
+    bd.b.Add(fp)
 
 def place(bd):
     x0, y0, x1, y1 = CHAMBER

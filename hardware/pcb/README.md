@@ -65,7 +65,10 @@ Piny ESP32 są te same co w `src/board.h`: I2C SDA 4 i SCL 5, radar RX 6 / TX 7 
   firmware bez zmian.
 - Bez diody między przetwornicą a USB: **nie podłączaj USB, gdy płytka jest zasilana z J1.**
   USB służy tylko do pierwszego wgrania, potem aktualizacje idą przez OTA.
-- Bez zacisku śrubowego, który jest za wysoki na 6 mm od strony sufitu. Przewody lutuje się do J1.
+- Bez zacisku śrubowego, który jest za wysoki na 6 mm od strony sufitu. Zamiast niego jest
+  przewód ~15 cm przylutowany do J1 na biurku i połączony w puszce złączką WAGO 221. Każda żyła
+  przechodzi najpierw przez otwór odciążający Ø2,2 pod padem (od sufitu na drugą stronę i z
+  powrotem przez pad), więc szarpnięcie nie urwie lutu. Przewód silikonowy 0,25–0,5 mm².
 - Przetwornica Pololu ma stałe wymiary i wejście do 50 V. Tanie MP1584 mają maks. ~28 V
   i różne rozmiary.
 
