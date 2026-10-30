@@ -9,3 +9,10 @@ src/local_defaults.h
 # Instructions for coding agents, kept local
 AGENTS.md
 CLAUDE.md
+
+# KiCad: local UI state, backups, generated reports
+*.kicad_prl
+*-backups/
+fp-info-cache
+hardware/pcb/drc.rpt
+fab/
